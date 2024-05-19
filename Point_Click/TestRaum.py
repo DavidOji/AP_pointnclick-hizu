@@ -1,6 +1,7 @@
 # Importieren der notwendigen Module aus PyQt6 für UI-Elemente und Ereignisverarbeitung
-from PyQt6.QtCore import QRect
+from PyQt6.QtCore import QRect, Qt, QDateTime, QTimer
 from PyQt6.QtGui import QMouseEvent
+from PyQt6.QtWidgets import QLabel, QPushButton
 
 # Importieren einer benutzerdefinierten Klasse TemplateRoom, die als Basis für diesen spezifischen Raum dient
 from TemplateRoom import TemplateRoom
@@ -49,6 +50,61 @@ class TestRaum(TemplateRoom):
         self.text_line_4 = "im SBS Herzogenaurach."
         self.text_line_5 = ""
         self.text_line_6 = "                                    weiter"
+
+#------------------------------------------------------------------------------------------------------
+
+        # Einfügen eines Labels mit einem Willkommens-Text
+        self.welcome_label = QLabel("Willkommen im TestRaum!", self)
+        self.welcome_label.setGeometry(100, 100, 300, 50)  # Setze die Position und Größe des Labels
+        self.welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Zentriere den Text im Label
+        self.welcome_label.setStyleSheet(
+            "background-color: lightgrey; color: black; font-size: 20px;")  # Stil des Labels
+# ------------------------------------------------------------------------------------------------------
+
+        #Button hinzufügen
+        self.action_button = QPushButton("Aktion ausführen", self)
+        self.action_button.setGeometry(500, 800, 200, 50)  # Position und Größe des Buttons
+        #self.action_button.clicked.connect(self.button_action)  # Verbindung des Buttons mit einer Funktion
+        #self.action_button.setEnabled(False)  # Button initial deaktivieren
+
+    #def button_action(self):
+        #print("Button wurde geklickt")
+
+# ------------------------------------------------------------------------------------------------------
+
+
+        # MP3-Button hinzufügen
+        self.mp3_button = QPushButton("Play MP3", self)
+        self.mp3_button.setGeometry(600, 400, 150, 50)  # Angenommene Position und Größe
+        #self.mp3_button.clicked.connect(self.play_mp3_file)  # Verbindung des Buttons mit der play_mp3_file Funktion
+
+    #def play_mp3_file(self):
+        #self.play_sound("TemplateRoom.mp3")
+
+# ------------------------------------------------------------------------------------------------------
+
+
+
+        # Datum- und Uhrzeit-Label hinzufügen
+        self.datetime_label = QLabel(self)
+        self.datetime_label.setGeometry(600, 50, 200, 40)  # Position und Größe des Labels
+        self.datetime_label.setStyleSheet("background-color: lightgray; color: black; font-size: 16px;")
+
+        # Timer für das Aktualisieren des Labels
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_datetime)
+        self.timer.start(1000)  # Timer wird alle 1000 Millisekunden (1 Sekunde) ausgelöst
+
+        # Sofortiges Update, um das aktuelle Datum und die Uhrzeit beim Start anzuzeigen
+        self.update_datetime()
+
+    def update_datetime(self):
+        # Aktuelles Datum und Uhrzeit abrufen und im Label anzeigen
+        current_datetime = QDateTime.currentDateTime().toString("dd.MM.yyyy hh:mm:ss")
+        self.datetime_label.setText(current_datetime)
+
+
+
 
     # Behandlung von Mausklick-Ereignissen
     def mousePressEvent(self, ev: QMouseEvent) -> None:
