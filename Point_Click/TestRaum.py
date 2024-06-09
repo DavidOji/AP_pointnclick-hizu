@@ -1,10 +1,21 @@
 # Importieren der notwendigen Module aus PyQt6 für UI-Elemente und Ereignisverarbeitung
 from PyQt6.QtCore import QRect, Qt, QDateTime, QTimer
-from PyQt6.QtGui import QMouseEvent
+from PyQt6.QtGui import QMouseEvent, QPixmap
 from PyQt6.QtWidgets import QLabel, QPushButton
 
 # Importieren einer benutzerdefinierten Klasse TemplateRoom, die als Basis für diesen spezifischen Raum dient
 from TemplateRoom import TemplateRoom
+
+
+'''x: Die X-Koordinate des Widgets im Fenster (von links nach rechts).
+y: Die Y-Koordinate des Widgets im Fenster (von oben nach unten).
+width: Die Breite des Widgets.
+height: Die Höhe des Widgets.'''
+
+
+'''Der TestRaum ist ein interaktiver Raum mit speziellen Funktionen wie einem 
+MP3-Player-Button und einem Label, das aktuelle Datum und Uhrzeit anzeigt. 
+Dieser Raum enthält auch interaktive Elemente wie eine Easter-Egg-Hitbox und verschiedene Dialogsequenzen zur Benutzerinteraktion.'''
 
 
 # Definition der Klasse QrCode, die von TemplateRoom erbt
@@ -32,6 +43,9 @@ class TestRaum(TemplateRoom):
         self.hitbox_door_1 = QRect(5, 215, 350, 600)
         self.append_hitbox(self.hitbox_door_1)
 
+        # Hitbox für den Raumwechsel zum Neuen Raum-------------------------------------------------------------------------------------------------------------------
+        self.hitbox_to_new_room = QRect(500, 300, 100, 50)
+        self.append_hitbox(self.hitbox_to_new_room)
 
         # Eine weitere Hitbox, die eine Schaltfläche für Vorwärts- oder Weiteraktionen darstellt
         self.hitbox_forward = QRect(1270, 150, 100, 25)
@@ -98,6 +112,24 @@ class TestRaum(TemplateRoom):
         # Sofortiges Update, um das aktuelle Datum und die Uhrzeit beim Start anzuzeigen
         self.update_datetime()
 
+
+# ------------------------------------------------------------------------------------------------------
+        # Label erstellen, das das Bild enthält
+        self.image_label = QLabel(self)
+        self.pixmap = QPixmap('QR-Code.png')  # Pfad zu deinem Bild
+        self.image_label.setPixmap(self.pixmap)
+        self.image_label.setGeometry(400, 300, 200, 40)
+        self.image_label.setScaledContents(True)  # Stellt sicher, dass das Bild skaliert wird, um in das Label zu passen
+        self.image_label.resize(300, 200)  # Größe des Labels anpassen
+
+        # Button erstellen, der die Sichtbarkeit des Labels steuert
+        self.toggle_button = QPushButton("Bild anzeigen/verstecken", self)
+        self.toggle_button.clicked.connect(self.toggle_image_visibility)
+
+    def toggle_image_visibility(self):
+        # Wechselt die Sichtbarkeit des Labels
+        self.image_label.setVisible(not self.image_label.isVisible())
+
     def update_datetime(self):
         # Aktuelles Datum und Uhrzeit abrufen und im Label anzeigen
         current_datetime = QDateTime.currentDateTime().toString("dd.MM.yyyy hh:mm:ss")
@@ -135,6 +167,9 @@ class TestRaum(TemplateRoom):
             self.stop_player()  # Beendet möglicherweise die Wiedergabe von Animationen oder ähnlichem
             self.new_room.emit("Aula.jpg")  # Signalisiert einen Raumwechsel
 
+        if self.hitbox_to_new_room.contains(ev.pos()):
+            self.new_room.emit("gemstone.jpg")
+
         # Fortschreiten des Dialogs durch Klicken auf die Vorwärts-Hitbox
         if self.hitbox_forward.contains(mouse_pos):
             self.__counter += 1  # Erhöhen des Zählers zur Steuerung der Dialogsequenzen
@@ -143,3 +178,10 @@ class TestRaum(TemplateRoom):
 
             # Nach Durchlaufen aller Dialoge, den UI aktualisieren
             self.update()
+
+
+            #Erstellen einer Raumklasse
+            #Neue Hitbox definieren
+            #mousepress erweitern
+            #raum registieren bedeutet einfügen der klasse im Mainwindow
+            #renew_room und chancgeroom erweitern

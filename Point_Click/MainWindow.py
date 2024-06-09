@@ -5,6 +5,14 @@ from PyQt6.QtWidgets import QMainWindow, QMenuBar, QStatusBar, QMessageBox
 from Aula import Aula
 from Eingang import Eingang
 from TestRaum import TestRaum
+from NeuerRaum import NeuerRaum
+
+
+
+"""Diese Klasse verwaltet das Hauptfenster der Anwendung. Es handelt sich um ein QMainWindow, 
+das verschiedene Räume der Schule darstellt. In MainWindow werden verschiedene UI-Elemente wie 
+Menüleisten und Statusleisten konfiguriert und die Logik für den Wechsel zwischen verschiedenen Räumen 
+(Eingang, Aula, TestRaum) implementiert. Es enthält auch Slots für Ereignisse wie Raumwechsel und das Finden von Easter Eggs."""
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -59,6 +67,10 @@ class MainWindow(QMainWindow):
             self.central_widget = Aula()
         elif new_room == "weis.png":
             self.central_widget = TestRaum()
+        elif new_room == "gemstone.jpg":
+            self.central_widget = NeuerRaum()
+
+
         else:
             print("Fehler: new_room nicht vergeben")
         self.setup_new_room()
@@ -70,6 +82,11 @@ class MainWindow(QMainWindow):
             self.central_widget = Eingang()
         elif old_room == "weis.png":
             self.central_widget = TestRaum()
+        elif old_room == "gemstone.jpg":
+            self.central_widget = NeuerRaum()
+
+
+
         else:
             print("Fehler: change_room nicht vergeben")
         self.setup_new_room()

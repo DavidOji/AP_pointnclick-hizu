@@ -165,7 +165,11 @@ class TemplateRoom(QLabel):
 
     def init_room(self, room_name):
         self.__room_name = room_name
-        self.__background_pixmap = QPixmap(self.__room_name).scaled(self.__size.width(), self.__size.height())
+        self.__background_pixmap = QPixmap(self.__room_name)
+        if self.__background_pixmap.isNull():
+            print(f"Failed to load image: {room_name}")
+        self.__background_pixmap = self.__background_pixmap.scaled(self.__size.width(), self.__size.height(),
+                                                                   Qt.AspectRatioMode.KeepAspectRatio)
 
         self.__pos_x_exit = self.__size.height() - self.__offset_exit - self.__heigth_box - 30
         self.hitbox_exit = QRect(self.__offset_exit, self.__pos_x_exit, 100, self.__heigth_box)
@@ -191,8 +195,9 @@ class TemplateRoom(QLabel):
     def play_sound(self, source_path):
         if not self.player.isPlaying():
             self.player.setSource(QUrl.fromLocalFile(source_path))
-            self.audioOutput.setVolume(50)
+            self.audioOutput.setVolume(100)
             self.player.play()
+
 
     def stop_player(self):
         if self.player.isPlaying():
