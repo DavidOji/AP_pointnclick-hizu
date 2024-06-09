@@ -6,6 +6,8 @@ from Aula import Aula
 from Eingang import Eingang
 from TestRaum import TestRaum
 from NeuerRaum import NeuerRaum
+from Hinzufügen import Hinzufügen
+from Lösung import Lösung
 
 
 
@@ -69,6 +71,10 @@ class MainWindow(QMainWindow):
             self.central_widget = TestRaum()
         elif new_room == "gemstone.jpg":
             self.central_widget = NeuerRaum()
+        elif new_room == "stars.jpg":
+            self.central_widget = Hinzufügen()
+        elif new_room == "bokeh.jpg":
+            self.central_widget = Lösung()
 
 
         else:
@@ -84,6 +90,10 @@ class MainWindow(QMainWindow):
             self.central_widget = TestRaum()
         elif old_room == "gemstone.jpg":
             self.central_widget = NeuerRaum()
+        elif old_room == "stars.jpg":
+            self.central_widget = Hinzufügen()
+        elif old_room == "bokeh.jpg":
+            self.central_widget = Lösung()
 
 
 

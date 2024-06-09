@@ -24,6 +24,12 @@ class Eingang(TemplateRoom):
         self.hitbox_door_2 = QRect(1150, 215, 275, 600)
         self.append_hitbox(self.hitbox_door_2)
 
+        self.hitbox_door_3 = QRect(250, 480 , 620, 800)
+        self.append_hitbox(self.hitbox_door_3)
+
+        self.hitbox_door_4 = QRect(150, 380, 520, 700)
+        self.append_hitbox(self.hitbox_door_4)
+
         self.hitbox_forward = QRect(1270, 150, 100, 25)
         self.append_hitbox(self.hitbox_forward)
 
@@ -64,6 +70,16 @@ class Eingang(TemplateRoom):
             self.stop_player()
 
             self.new_room.emit("Aula.jpg")
+
+        if self.hitbox_door_3.contains(mouse_pos):
+            self.stop_player()
+
+            self.new_room.emit("stars.jpg")
+
+        if self.hitbox_door_4.contains(mouse_pos):
+            self.stop_player()
+
+            self.new_room.emit("bokeh.jpg")
 
         if self.hitbox_forward.contains(mouse_pos):
             if self.__counter == 0:
